@@ -1,0 +1,53 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Step 1: Load the data
+df = pd.read_csv('/mnt/data/Unemployment in India.csv')
+
+# Step 2: Clean the data
+df.columns = df.columns.str.strip()  # Remove any extra spaces in column names
+df['Date'] = pd.to_datetime(df['Date'], errors='coerce')  # Convert to datetime
+df.dropna(subset=['Date'], inplace=True)  # Drop rows with invalid dates
+
+# Optional: Check unique regions or states
+print("States:", df['Region'].unique())
+
+# Step 3: Explore structure
+print(df.info())
+print(df.describe())
+
+# Step 4: Visualize overall unemployment trend
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=df, x='Date', y='Estimated Unemployment Rate (%)', hue='Region')
+plt.title('Unemployment Rate Trend Across Indian States')
+plt.xlabel('Date')
+plt.ylabel('Unemployment Rate (%)')
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
+
+# Step 5: Focus on COVID-19 period impact (2020 onwards)
+covid_df = df[df['Date'] >= '2020-01-01']
+
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=covid_df, x='Date', y='Estimated Unemployment Rate (%)', hue='Region')
+plt.title('Impact of COVID-19 on Unemployment Rate (2020 onwards)')
+plt.xlabel('Date')
+plt.ylabel('Unemployment Rate (%)')
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
+
+# Step 6: Monthly Average Trend (Seasonality)
+df['Month'] = df['Date'].dt.month
+df['Year'] = df['Date'].dt.year
+monthly_avg = df.groupby(['Year', 'Month'])['Estimated Unemployment Rate (%)'].mean().reset_index()
+
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=monthly_avg, x='Month', y='Estimated Unemployment Rate (%)', hue='Year', palette='tab10')
+plt.title('Monthly Average Unemployment Trend')
+plt.xlabel('Month')
+plt.ylabel('Average Unemployment Rate (%)')
+plt.xticks(range(1, 13))
+plt.show()
