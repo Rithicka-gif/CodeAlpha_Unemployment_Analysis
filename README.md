@@ -6,7 +6,6 @@ This project analyzes unemployment rate data across Indian states using Python. 
 
 ## 📁 Dataset
 
-- **Filename**: `Unemployment in India.csv`
 - **Description**: Contains unemployment rate data across different Indian states over time.
 - **Fields Include**:
   - Date
