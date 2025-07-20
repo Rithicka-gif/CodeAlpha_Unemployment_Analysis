@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Step 1: Load the data
-df = pd.read_csv('Unemployment in India.csv')
+df = pd.read_csv('/mnt/data/Unemployment in India.csv')
 
 # Step 2: Clean the data
 df.columns = df.columns.str.strip()  # Remove any extra spaces in column names
